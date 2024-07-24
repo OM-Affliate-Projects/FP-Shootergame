@@ -1,7 +1,7 @@
 "use client";
 import { OrbitControls, Stats } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Lights, Ground, Cube } from "./components";
+import { Lights, Ground, Cube, FirstPersonControls } from "./components";
 
 export default function Game() {
   const testing = true;
@@ -15,7 +15,8 @@ export default function Game() {
         <Lights />
         <Ground />
         <Cube />
-        <OrbitControls />
+        {/* <OrbitControls /> */}
+        <FirstPersonControls />
       </Canvas>
     </div>
   );
