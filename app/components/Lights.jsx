@@ -9,7 +9,7 @@ export default function Lights() {
   return (
     <>
       <ambientLight />
-      <directionalLight position={[0, 5, 5]} ref={lightRef} />
+      <directionalLight position={[0, 5, 5]} ref={lightRef} castShadow />
     </>
   );
 }

@@ -1,23 +1,21 @@
 "use client";
 import { OrbitControls, Stats } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Lights } from "./components";
+import { Lights, Ground, Cube } from "./components";
 
 export default function Game() {
   const testing = true;
 
   return (
     <div className="container">
-      <Canvas>
+      <Canvas shadows>
         {testing ? <axesHelper /> : null}
         {testing ? <gridHelper /> : null}
         {testing ? <Stats /> : null}
         <Lights />
+        <Ground />
+        <Cube />
         <OrbitControls />
-        <mesh>
-          <boxGeometry />
-          <meshStandardMaterial color={"lightgreen"} />
-        </mesh>
       </Canvas>
     </div>
   );
