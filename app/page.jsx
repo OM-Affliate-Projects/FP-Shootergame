@@ -8,7 +8,7 @@ export default function Game() {
 
   return (
     <div className="container">
-      <Canvas shadows>
+      <Canvas shadows camera={{ position: [5, 1.5, 0] }}>
         {testing ? <axesHelper /> : null}
         {testing ? <gridHelper /> : null}
         {testing ? <Stats /> : null}
