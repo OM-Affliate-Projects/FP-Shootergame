@@ -1,6 +1,6 @@
 "use client";
 import { Suspense } from "react";
-import { Stats } from "@react-three/drei";
+import { OrbitControls, Stats } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import {
   Lights,
@@ -26,7 +26,7 @@ export default function Game() {
             <RigidBody>
               <mesh>
                 <planeGeometry />
-                <meshStandardMaterial/>
+                <meshStandardMaterial />
               </mesh>
             </RigidBody>
             <RigidBody>
@@ -35,10 +35,9 @@ export default function Game() {
             <RigidBody>
               <Cube />
             </RigidBody>
-
-              <Player />
-
-            {/* <FirstPersonControls/> */}
+            <Player />
+            {/* <FirstPersonControls /> */}
+            <OrbitControls />
           </Physics>
         </Suspense>
       </Canvas>

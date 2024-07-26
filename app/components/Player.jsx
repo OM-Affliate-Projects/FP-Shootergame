@@ -3,9 +3,8 @@ import { useFrame } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { useRef, useState, useEffect } from "react";
 
-
 export default function Player() {
-  const playerRef = useRef(0);
+  const playerRef = useRef();
   const [keysPressed, setKeysPressed] = useState({
     forward: false,
     backward: false,
@@ -62,27 +61,30 @@ export default function Player() {
 
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
   }, []);
 
-
-
   useFrame(() => {
+    const movementSpeed = 2;
+    let velocity = { x: 0, y: 0, z: 0 };
 
-    if (keysPressed.forward) playerRef.current.setLinvel({x:0,y:0,z:-2})
-    if (keysPressed.backward) playerRef.current.setLinvel({x:0,y:0,z:1})
-    if (keysPressed.leftward) playerRef.current.setRotation()
-    if (keysPressed.rightward) playerRef.current.setRotation()
-      
+    if (keysPressed.forward) velocity.z -= movementSpeed;
+    if (keysPressed.backward) velocity.z += movementSpeed;
+    if (keysPressed.leftward) velocity.x -= movementSpeed;
+    if (keysPressed.rightward) velocity.x += movementSpeed;
 
+    playerRef.current.setLinvel(velocity, true);
   });
-
 
   return (
     <>
-
       <RigidBody ref={playerRef} position={[0, 0.5, 2]}>
         <mesh castShadow>
-          <PerspectiveCamera position={[0, 1.5, 5]} makeDefault />
+          <PerspectiveCamera position={[0, 3, 10]} makeDefault />
           <boxGeometry />
           <meshStandardMaterial color={"yellow"} />
         </mesh>
