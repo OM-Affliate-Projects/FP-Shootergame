@@ -2,7 +2,14 @@
 import { Suspense } from "react";
 import { Stats } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Lights, Ground, Cube, FirstPersonControls } from "./components";
+import {
+  Lights,
+  Ground,
+  Cube,
+  FirstPersonControls,
+  Player,
+} from "./components";
+import { Physics, RigidBody } from "@react-three/rapier";
 
 export default function Game() {
   const testing = true;
@@ -11,13 +18,28 @@ export default function Game() {
     <div className="container">
       <Canvas shadows camera={{ position: [10, 1.5, 0] }}>
         <Suspense fallback={null}>
-          {testing ? <axesHelper /> : null}
-          {testing ? <gridHelper args={[100, 100]} /> : null}
-          {testing ? <Stats /> : null}
-          <Lights />
-          <Ground />
-          <Cube />
-          <FirstPersonControls />
+          <Physics debug>
+            {testing ? <axesHelper /> : null}
+            {testing ? <gridHelper args={[100, 100]} /> : null}
+            {testing ? <Stats /> : null}
+            <Lights />
+            <RigidBody>
+              <mesh>
+                <planeGeometry />
+                <meshStandardMaterial/>
+              </mesh>
+            </RigidBody>
+            <RigidBody>
+              <Ground />
+            </RigidBody>
+            <RigidBody>
+              <Cube />
+            </RigidBody>
+
+              <Player />
+
+            {/* <FirstPersonControls/> */}
+          </Physics>
         </Suspense>
       </Canvas>
     </div>
