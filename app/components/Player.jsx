@@ -82,13 +82,14 @@ export default function Player() {
 
   return (
     <>
-      <RigidBody ref={playerRef} position={[0, 0.5, 2]}>
+      <RigidBody ref={playerRef} position={[0, 0.5, 2]} type="dynamic">
         <mesh castShadow>
           <PerspectiveCamera position={[0, 3, 10]} makeDefault />
           <boxGeometry />
           <meshStandardMaterial color={"yellow"} />
         </mesh>
       </RigidBody>
+      {console.log("hi")}
     </>
   );
 }
