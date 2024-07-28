@@ -74,8 +74,8 @@ export default function Player() {
 
     if (keysPressed.forward) velocity.z -= movementSpeed;
     if (keysPressed.backward) velocity.z += movementSpeed;
-    if (keysPressed.leftward) velocity.x -= movementSpeed;
-    if (keysPressed.rightward) velocity.x += movementSpeed;
+    if (keysPressed.leftward) playerRef.current.setRotation({w:1.0, x:0.0, y:1.0, z:0.0})
+    if (keysPressed.rightward) playerRef.current.setRotation({w:0.5, x:0.0, y:-1.0, z:0.0})
 
     playerRef.current.setLinvel(velocity, true);
   });

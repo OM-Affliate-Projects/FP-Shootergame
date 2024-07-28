@@ -37,7 +37,7 @@ export default function Game() {
             </RigidBody>
             <Player />
             {/* <FirstPersonControls /> */}
-            <OrbitControls />
+            {/* <OrbitControls /> */}
           </Physics>
         </Suspense>
       </Canvas>
