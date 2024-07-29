@@ -8,8 +8,10 @@ import {
   Cube,
   FirstPersonControls,
   Player,
+  Lab
 } from "./components";
 import { Physics, RigidBody } from "@react-three/rapier";
+
 
 export default function Game() {
   const testing = true;
@@ -23,21 +25,22 @@ export default function Game() {
             {testing ? <gridHelper args={[100, 100]} /> : null}
             {testing ? <Stats /> : null}
             <Lights />
-            <RigidBody>
+            {/* <RigidBody>
               <mesh>
                 <planeGeometry />
                 <meshStandardMaterial />
               </mesh>
-            </RigidBody>
-            <RigidBody>
+            </RigidBody> */}
+            {/* <RigidBody>
               <Ground />
-            </RigidBody>
-            <RigidBody>
+            </RigidBody> */}
+            {/* <RigidBody>
               <Cube />
-            </RigidBody>
+            </RigidBody> */}
             <Player />
+            <Lab/>
             {/* <FirstPersonControls /> */}
-            {/* <OrbitControls /> */}
+            <OrbitControls />
           </Physics>
         </Suspense>
       </Canvas>
