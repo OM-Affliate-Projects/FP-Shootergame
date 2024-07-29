@@ -5,6 +5,8 @@ import { useRef, useState, useEffect } from "react";
 
 export default function Player() {
   const playerRef = useRef();
+
+
   const [keysPressed, setKeysPressed] = useState({
     forward: false,
     backward: false,
@@ -57,6 +59,8 @@ export default function Player() {
         default:
           break;
       }
+
+      if (playerRef.current) console.log(playerRef.current.isKinematic());
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -74,22 +78,30 @@ export default function Player() {
 
     if (keysPressed.forward) velocity.z -= movementSpeed;
     if (keysPressed.backward) velocity.z += movementSpeed;
-    if (keysPressed.leftward) playerRef.current.setAngvel({w:0.5, x:0.0, y:1.0, z:0.0})
-    if (keysPressed.rightward) playerRef.current.setAngvel({w:0.5, x:0.0, y:-1.0, z:0.0})
+    if (keysPressed.leftward)
+      playerRef.current.setAngvel({ w: 0.5, x: 0.0, y: 1.0, z: 0.0 });
+    if (!keysPressed.leftward)
+      playerRef.current.setAngvel({ w: 0.0, x: 0.0, y: 0.0, z: 0.0 });
+    if (keysPressed.rightward)
+      playerRef.current.setAngvel({ w: 0.5, x: 0.0, y: -1.0, z: 0.0 });
+    
 
     playerRef.current.setLinvel(velocity, true);
   });
 
   return (
     <>
-      <RigidBody ref={playerRef} position={[0, 0.5, 2]} type="dynamic">
+      <RigidBody
+        ref={playerRef}
+        position={[0, 0.5, 2]}
+        type="kinematicVelocity"
+      >
         <mesh castShadow>
           <PerspectiveCamera position={[0, 3, 10]} makeDefault />
           <boxGeometry />
           <meshStandardMaterial color={"yellow"} />
         </mesh>
       </RigidBody>
-      {console.log("hi")}
     </>
   );
 }
