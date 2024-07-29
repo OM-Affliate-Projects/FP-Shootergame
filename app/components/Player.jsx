@@ -2,11 +2,10 @@ import { PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { useRef, useState, useEffect } from "react";
+import { Vector3 } from "three";
 
 export default function Player() {
   const playerRef = useRef();
-
-
   const [keysPressed, setKeysPressed] = useState({
     forward: false,
     backward: false,
@@ -59,8 +58,11 @@ export default function Player() {
         default:
           break;
       }
-
-      if (playerRef.current) console.log(playerRef.current.isKinematic());
+      
+      // Check if the player is kinematic
+      if (playerRef.current) {
+        console.log("Is Kinematic:", playerRef.current.isKinematic());
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -73,20 +75,35 @@ export default function Player() {
   }, []);
 
   useFrame(() => {
-    const movementSpeed = 2;
-    let velocity = { x: 0, y: 0, z: 0 };
+    if (playerRef.current) {
+      const movementSpeed = 2;
+      const angularSpeed = 2;
+      
+      let velocity = new Vector3();
+      let angularVelocity = new Vector3();
 
-    if (keysPressed.forward) velocity.z -= movementSpeed;
-    if (keysPressed.backward) velocity.z += movementSpeed;
-    if (keysPressed.leftward)
-      playerRef.current.setAngvel({ w: 0.5, x: 0.0, y: 1.0, z: 0.0 });
-    if (!keysPressed.leftward)
-      playerRef.current.setAngvel({ w: 0.0, x: 0.0, y: 0.0, z: 0.0 });
-    if (keysPressed.rightward)
-      playerRef.current.setAngvel({ w: 0.5, x: 0.0, y: -1.0, z: 0.0 });
-    
+      // Get the player's current rotation (quaternion)
+      const quaternion = playerRef.current.rotation(); // Retrieves the quaternion representing the rotation
 
-    playerRef.current.setLinvel(velocity, true);
+      // Create a local direction vector (e.g., forward)
+      const localForward = new Vector3(0, 0, 1); // Assuming forward is along the negative Z-axis
+
+      // Transform the local direction to world space using the quaternion
+      const worldForward = localForward.clone().applyQuaternion(quaternion);
+
+      // Calculate the linear velocity based on user input
+      if (keysPressed.forward) velocity.add(worldForward.multiplyScalar(-movementSpeed)); // Forward moves in world backward direction
+      if (keysPressed.backward) velocity.add(worldForward.multiplyScalar(movementSpeed)); // Backward moves in world forward direction
+
+      if (keysPressed.leftward) {
+        angularVelocity.y = angularSpeed; 
+      } else if (keysPressed.rightward) {
+        angularVelocity.y = -angularSpeed; 
+      }
+
+      playerRef.current.setLinvel(velocity, true);
+      playerRef.current.setAngvel(angularVelocity, true);
+    }
   });
 
   return (
