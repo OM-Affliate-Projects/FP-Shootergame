@@ -40,7 +40,7 @@ export default function Game() {
             <Player />
             <Lab/>
             {/* <FirstPersonControls /> */}
-            <OrbitControls />
+            {/* <OrbitControls /> */}
           </Physics>
         </Suspense>
       </Canvas>

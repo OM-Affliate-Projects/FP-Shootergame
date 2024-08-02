@@ -106,15 +106,19 @@ export default function Player() {
     }
   });
 
+
+  //Müssen den Type auf kinematic ändern und kollision von kine zu static schaffen 
+  
   return (
     <>
       <RigidBody
         ref={playerRef}
         position={[0, 0.5, 2]}
-        type="kinematicVelocity"
+        // type="kinematicVelocity"
+        type="dynamic"
       >
         <mesh castShadow>
-          <PerspectiveCamera position={[0, 3, 10]} makeDefault />
+          <PerspectiveCamera position={[0, 3, 0]} makeDefault />
           <boxGeometry />
           <meshStandardMaterial color={"yellow"} />
         </mesh>

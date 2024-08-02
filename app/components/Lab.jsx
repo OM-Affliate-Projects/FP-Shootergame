@@ -16,8 +16,9 @@ export default function Lab() {
   });
   return (
     <group position={[24,-0.3,25]} scale={0.5}>
-      <RigidBody type="fixed" ref={labRef}>
+      <RigidBody colliders="trimesh" type="fixed" ref={labRef}>
         <primitive object={gltf.scene} />
+        
       </RigidBody>
     </group>
   );
