@@ -8,10 +8,9 @@ import {
   Cube,
   FirstPersonControls,
   Player,
-  Lab
+  Lab,
 } from "./components";
 import { Physics, RigidBody } from "@react-three/rapier";
-
 
 export default function Game() {
   const testing = true;
@@ -38,9 +37,9 @@ export default function Game() {
               <Cube />
             </RigidBody> */}
             <Player />
-            <Lab/>
+            <Lab />
             {/* <FirstPersonControls /> */}
-            <OrbitControls />
+            {/* <OrbitControls /> */}
           </Physics>
         </Suspense>
       </Canvas>

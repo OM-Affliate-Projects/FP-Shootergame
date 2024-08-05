@@ -12,6 +12,11 @@ export default function Player() {
     leftward: false,
     rightward: false,
   });
+  const [mouse, setMouse] = useState({
+    rightButtonDown: false,
+    movementX: 0,
+    movementY: 0,
+  });
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -58,27 +63,50 @@ export default function Player() {
         default:
           break;
       }
-      
-      // Check if the player is kinematic
-      if (playerRef.current) {
-        console.log("Is Kinematic:", playerRef.current.isKinematic());
+    };
+
+    const handleMouseDown = (event) => {
+      if (event.button === 2) {
+        setMouse((prev) => ({ ...prev, rightButtonDown: true }));
+      }
+    };
+
+    const handleMouseUp = (event) => {
+      if (event.button === 2) {
+        setMouse((prev) => ({ ...prev, rightButtonDown: false }));
+      }
+    };
+
+    const handleMouseMove = (event) => {
+      if (mouse.rightButtonDown) {
+        setMouse((prev) => ({
+          ...prev,
+          movementX: event.movementX,
+          movementY: event.movementY,
+        }));
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [mouse.rightButtonDown]);
 
   useFrame(() => {
     if (playerRef.current) {
       const movementSpeed = 2;
-      const angularSpeed = 2;
-      
+      const angularSpeed = 0.5;
+
       let velocity = new Vector3();
       let angularVelocity = new Vector3();
 
@@ -92,13 +120,27 @@ export default function Player() {
       const worldForward = localForward.clone().applyQuaternion(quaternion);
 
       // Calculate the linear velocity based on user input
-      if (keysPressed.forward) velocity.add(worldForward.multiplyScalar(-movementSpeed)); // Forward moves in world backward direction
-      if (keysPressed.backward) velocity.add(worldForward.multiplyScalar(movementSpeed)); // Backward moves in world forward direction
+      if (keysPressed.forward)
+        velocity.add(worldForward.multiplyScalar(-movementSpeed)); // Forward moves in world backward direction
+      if (keysPressed.backward)
+        velocity.add(worldForward.multiplyScalar(movementSpeed)); // Backward moves in world forward direction
 
       if (keysPressed.leftward) {
-        angularVelocity.y = angularSpeed; 
+        angularVelocity.y = angularSpeed;
       } else if (keysPressed.rightward) {
-        angularVelocity.y = -angularSpeed; 
+        angularVelocity.y = -angularSpeed;
+      }
+
+      if (
+        mouse.rightButtonDown &&
+        (mouse.movementX !== 0 || mouse.movementY !== 0)
+      ) {
+        angularVelocity.y -= mouse.movementX * angularSpeed;
+        setMouse((prev) => ({
+          ...prev,
+          movementX: 0,
+          movementY: 0,
+        }));
       }
 
       playerRef.current.setLinvel(velocity, true);
