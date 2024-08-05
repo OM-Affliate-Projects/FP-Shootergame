@@ -2,15 +2,8 @@
 import { Suspense } from "react";
 import { OrbitControls, Stats } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import {
-  Lights,
-  Ground,
-  Cube,
-  FirstPersonControls,
-  Player,
-  Lab,
-} from "./components";
-import { Physics, RigidBody } from "@react-three/rapier";
+import { Lights, Ground, FirstPersonControls, Player, Lab } from "./components";
+import { Physics } from "@react-three/rapier";
 
 export default function Game() {
   const testing = true;
@@ -24,18 +17,7 @@ export default function Game() {
             {testing ? <gridHelper args={[100, 100]} /> : null}
             {testing ? <Stats /> : null}
             <Lights />
-            {/* <RigidBody>
-              <mesh>
-                <planeGeometry />
-                <meshStandardMaterial />
-              </mesh>
-            </RigidBody> */}
-            {/* <RigidBody>
-              <Ground />
-            </RigidBody> */}
-            {/* <RigidBody>
-              <Cube />
-            </RigidBody> */}
+            <Ground />
             <Player />
             <Lab />
             {/* <FirstPersonControls /> */}

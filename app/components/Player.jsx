@@ -105,31 +105,27 @@ export default function Player() {
   useFrame(() => {
     if (playerRef.current) {
       const movementSpeed = 2;
-      const angularSpeed = 0.5;
+      const angularSpeed = 1;
 
       let velocity = new Vector3();
       let angularVelocity = new Vector3();
 
-      // Get the player's current rotation (quaternion)
-      const quaternion = playerRef.current.rotation(); // Retrieves the quaternion representing the rotation
+      const quaternion = playerRef.current.rotation();
 
-      // Create a local direction vector (e.g., forward)
-      const localForward = new Vector3(0, 0, 1); // Assuming forward is along the negative Z-axis
+      const localForward = new Vector3(0, 0, 1);
+      const localRight = new Vector3(1, 0, 0);
 
-      // Transform the local direction to world space using the quaternion
       const worldForward = localForward.clone().applyQuaternion(quaternion);
+      const worldRight = localRight.clone().applyQuaternion(quaternion);
 
-      // Calculate the linear velocity based on user input
       if (keysPressed.forward)
-        velocity.add(worldForward.multiplyScalar(-movementSpeed)); // Forward moves in world backward direction
+        velocity.add(worldForward.multiplyScalar(-movementSpeed));
       if (keysPressed.backward)
-        velocity.add(worldForward.multiplyScalar(movementSpeed)); // Backward moves in world forward direction
-
-      if (keysPressed.leftward) {
-        angularVelocity.y = angularSpeed;
-      } else if (keysPressed.rightward) {
-        angularVelocity.y = -angularSpeed;
-      }
+        velocity.add(worldForward.multiplyScalar(movementSpeed));
+      if (keysPressed.leftward)
+        velocity.add(worldRight.multiplyScalar(-movementSpeed));
+      if (keysPressed.rightward)
+        velocity.add(worldRight.multiplyScalar(movementSpeed));
 
       if (
         mouse.rightButtonDown &&
