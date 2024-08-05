@@ -2,10 +2,11 @@ import { PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { useRef, useState, useEffect } from "react";
-import { Vector3 } from "three";
+import { Vector3, Euler } from "three";
 
 export default function Player() {
   const playerRef = useRef();
+  const cameraRef = useRef();
   const [keysPressed, setKeysPressed] = useState({
     forward: false,
     backward: false,
@@ -17,6 +18,7 @@ export default function Player() {
     movementX: 0,
     movementY: 0,
   });
+  const [cameraRotation, setCameraRotation] = useState(new Euler());
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -132,6 +134,16 @@ export default function Player() {
         (mouse.movementX !== 0 || mouse.movementY !== 0)
       ) {
         angularVelocity.y -= mouse.movementX * angularSpeed;
+
+        setCameraRotation((prev) => {
+          const newRotation = prev.clone();
+          newRotation.x -= mouse.movementY * 0.01;
+          newRotation.x = Math.max(
+            -Math.PI / 2,
+            Math.min(Math.PI / 2, newRotation.x)
+          );
+          return newRotation;
+        });
         setMouse((prev) => ({
           ...prev,
           movementX: 0,
@@ -141,6 +153,14 @@ export default function Player() {
 
       playerRef.current.setLinvel(velocity, true);
       playerRef.current.setAngvel(angularVelocity, true);
+    }
+
+    if (cameraRef.current) {
+      cameraRef.current.rotation.set(
+        cameraRotation.x,
+        cameraRotation.y,
+        cameraRotation.z
+      );
     }
   });
 
@@ -152,7 +172,11 @@ export default function Player() {
         type="kinematicVelocity"
       >
         <mesh castShadow>
-          <PerspectiveCamera position={[0, 3, 10]} makeDefault />
+          <PerspectiveCamera
+            ref={cameraRef}
+            position={[0, 3, 10]}
+            makeDefault
+          />
           <boxGeometry />
           <meshStandardMaterial color={"yellow"} />
         </mesh>
