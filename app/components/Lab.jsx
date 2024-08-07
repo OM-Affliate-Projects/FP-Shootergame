@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 export default function Lab() {
-  const gltf = useLoader(GLTFLoader, "./labyrinth.glb");
+  const gltf = useLoader(GLTFLoader, "./tunnel.glb");
   const labRef = useRef(gltf);
   console.log(RigidBody);
 
@@ -15,7 +15,7 @@ export default function Lab() {
     }
   });
   return (
-    <group position={[24,-0.3,25]} scale={0.5}>
+    <group position={[0,0,0]} scale={1}>
       <RigidBody colliders="trimesh" type="fixed" ref={labRef}>
         <primitive object={gltf.scene} />
         

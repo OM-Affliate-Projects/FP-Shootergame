@@ -31,16 +31,16 @@ export default function Game() {
                 <meshStandardMaterial />
               </mesh>
             </RigidBody> */}
-            {/* <RigidBody>
+            <RigidBody>
               <Ground />
-            </RigidBody> */}
+            </RigidBody>
             {/* <RigidBody>
               <Cube />
             </RigidBody> */}
             <Player />
             <Lab/>
             {/* <FirstPersonControls /> */}
-            {/* <OrbitControls /> */}
+            <OrbitControls />
           </Physics>
         </Suspense>
       </Canvas>
